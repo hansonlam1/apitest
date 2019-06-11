@@ -10,3 +10,5 @@ I did not fork that repo as I wanted to manually go through and
 recreate it to maximize my familiarity with ibapi
 
 I will add additional stuff as I explore functions and features
+
+reqHistoricalData.py is a work in progress.  It runs but I am not receiving any data
