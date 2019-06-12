@@ -7,14 +7,10 @@ from ibapi.client import EClient
 from ibapi.contract import Contract as IBContract
 import pandas as pd
 
-#class IBWrapper(EWrapper):
-#class IBClient(EClient):
-
-
 class ibapp(EWrapper, EClient):
     def __init__(self, ipaddress, portid, clientid):
         EWrapper.__init__(self)
-        EClient.__init__(self,wrapper=self)
+        EClient.__init__(self, wrapper=self)
 
         self.connect(ipaddress, portid, clientid)
 
@@ -28,12 +24,14 @@ ibclient = EClient(ibwrapper)
 contr = IBContract()
 contr.symbol = "MSFT"
 contr.secType = "STK"
-contr.exchange = "NASDAQ"
+contr.exchange = "SMART"
+contr.primaryExchange = "ISLAND"
 contr.currency = "USD"
+#contr.conId = 272093
 
 #connection settings
-runapp = ibapp("127.0.0.1",7496,99)
-bar = runapp.reqHistoricalData(1,contr,"20190601 11:00:00 GMT","10 D","1 day","MIDPOINT",1,1,False,[])
-df = pd.DataFrame(bar)
-print(df.head(2))
+runapp = ibapp("127.0.0.1", 7496, 99)
+historic_data = runapp.reqHistoricalData(1, contr, "20190605 11:00:00 GMT", "1 D", "1 hour", "MIDPOINT", 1, 1, False, [])
+#df = pd.DataFrame(historic_data)
+print(historic_data)
 runapp.disconnect()
