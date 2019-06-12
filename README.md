@@ -1,6 +1,7 @@
 # apitest
 The purpose of this project is to start playing around with the native IB Python API.
 
+##main.py
 Many thanks to the GitHub gist at vpribish/IBAPIpythonexample1.py
 as well as  robcarver17/IBAPIpythonexample1.py
 
@@ -11,4 +12,7 @@ recreate it to maximize my familiarity with ibapi
 
 I will add additional stuff as I explore functions and features
 
-reqHistoricalData.py is a work in progress.  It runs but I am not receiving any data
+##reqHistoricalData.py 
+Trying a very basic request for historical data.
+There is not error handling, threading or queuing in this sample.
+Keeping it to the bare basics for making a call to get information from IB
