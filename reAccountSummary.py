@@ -21,7 +21,9 @@ class ibapp(ibEWrapper, ibClient):
 
         self.connect(ipaddress, portid, clientid)
 
+
+if __name__ == '__main__'
+
 #connection settings
 runapp = ibapp("127.0.0.1", 7496, 99)
-
 runapp.disconnect()
