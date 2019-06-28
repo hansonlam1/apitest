@@ -14,5 +14,4 @@ I will add additional stuff as I explore functions and features
 
 ##reqHistoricalData.py 
 Trying a very basic request for historical data.
-There is not error handling, threading or queuing in this sample.
 Keeping it to the bare basics for making a call to get information from IB
