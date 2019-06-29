@@ -12,11 +12,13 @@ recreate it to maximize my familiarity with ibapi
 
 I will add additional stuff as I explore functions and features
 
-##reqAccountSummary.py (** work in progress)
+## reqAccountSummary.py
+(** work in progress)
 Trying a very basic request for account information
 Keeping it to the bare basics for making a call to get information from IB
 
 
-##reqHistoricalData.py (** work in progress)
+## reqHistoricalData.py 
+(** work in progress)
 Trying a very basic request for historical data.
 Keeping it to the bare basics for making a call to get information from IB
