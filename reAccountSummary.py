@@ -1,6 +1,7 @@
 #very basic attempt to get account information
 from ibapi.wrapper import EWrapper
 from ibapi.client import EClient
+from queue import Queue    #queue is a requirement for ibapi python
 
 class ibEWrapper(EWrapper):
 
@@ -19,11 +20,13 @@ class ibapp(ibEWrapper, ibClient):
         EWrapper.__init__(self)
         EClient.__init__(self, wrapper=self)        #we pass in self as we are using the EWrapper functions built into ibapp since it inherits from EWrapper
 
-        self.connect(ipaddress, portid, clientid)
+        self.eConnect(ipaddress, portid, clientid)
 
 
 if __name__ == '__main__'
 
 #connection settings
 runapp = ibapp("127.0.0.1", 7496, 99)
+runapp.startApi()   #documentation mentions a run function but the class definition only shows startApi()
+runapp.close()
 runapp.disconnect()
