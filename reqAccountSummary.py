@@ -1,13 +1,14 @@
 #very basic attempt to get account information
 from ibapi.wrapper import EWrapper
 from ibapi.client import EClient
+from threading import Thread
 import queue    #queue is a requirement for ibapi python
 
-class ibEWrapper(EWrapper):
+class IBEWrapper(EWrapper):
     
     def init_AccountSummary(self):
         accountSummaryQ = queue.Queue() #create the queue to receive account summary info
-        self._accountSummary = accountSummaryQ
+        self._accountSummaryQ = accountSummaryQ
 
         return accountSummaryQ
 
@@ -15,17 +16,17 @@ class ibEWrapper(EWrapper):
     def accountSummary(self, reqId, account, tag, value, currency):
         #put the values in a tuple and add it to the queue
         summaryrow = (reqId, account, tag, value, currency)
-        self.accountSummaryQ.put(summaryrow)
+        self._accountSummaryQ.put(summaryrow)   #note the underscore in _accountSummaryQ
         
-class ibClient(EClient):
+class IBClient(EClient):
 
     def __init__(self,wrapper):
         EClient.__init__(self,wrapper)  #matches the init of EClient
     
     def getAccountSummary(self, reqId, group, tags):
-        acctsumq = self.wrapper.init_AccountSummary #queue that gets the summary
+        acctsumq = self.wrapper.init_AccountSummary() #queue that gets the summary
 
-        self.reqAccountSummary(1,"All", "NetLiquidation")
+        self.reqAccountSummary(reqId,group,tags)
         
         #the values should get put into the queue by ibEWrapper.accountSummary
         MAX_WAIT_SECONDS = 10
@@ -35,20 +36,27 @@ class ibClient(EClient):
         except queue.Empty:
             print("Exceeded maximum wait for wrapper to respond")
             accountsummaryitem = "nothing here"
+        
+        return accountsummaryitem
 
 #create a class for the main app, consisting of the EClient and the EWrapper
-class ibapp(ibEWrapper, ibClient):
+class IBApp(IBEWrapper, IBClient):
     def __init__(self, ipaddress, portid, clientid):
-        EWrapper.__init__(self)
-        EClient.__init__(self, wrapper=self)        #we pass in self as we are using the EWrapper functions built into ibapp since it inherits from EWrapper
+        IBEWrapper.__init__(self)
+        IBClient.__init__(self, wrapper=self)        #we pass in self as we are using the EWrapper functions built into ibapp since it inherits from EWrapper
 
-        self.eConnect(ipaddress, portid, clientid)
+        #self.init_error()
+        self.connect(ipaddress, portid, clientid)
 
+        thread = Thread(target = self.run)
+        thread.start()
 
-if __name__ == '__main__'
+        setattr(self, "_thread", thread)
 
-#connection settings
-runapp = ibapp("127.0.0.1", 7496, 99)
+#if __name__ == '__main__':
+runapp = IBApp("127.0.0.1", 7496, 99)   #connection settings
 runapp.startApi()   #documentation mentions a run function but the class definition only shows startApi()
+x = runapp.getAccountSummary(1,"All","NetLiquidation")
+print(x)
 runapp.close()
 runapp.disconnect()
