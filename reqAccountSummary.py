@@ -27,7 +27,7 @@ class IBClient(EClient):
         acctsumq = self.wrapper.init_AccountSummary() #queue that gets the summary
 
         self.reqAccountSummary(reqId,group,tags)
-        
+        print("trying to get the number")        
         #the values should get put into the queue by ibEWrapper.accountSummary
         MAX_WAIT_SECONDS = 10
 
@@ -51,10 +51,10 @@ class IBApp(IBEWrapper, IBClient):
         #self.init_error()
         self.connect(ipaddress, portid, clientid)
 
-#       thread = Thread(target = self.run)
-#        thread.start()
+        thread = Thread(target = self.run)
+        thread.start()
 
-#        setattr(self, "_thread", thread)
+        setattr(self, "_thread", thread)
     
 #if __name__ == '__main__':
 runapp = IBApp("127.0.0.1", 7496, 99)   #connection settings
