@@ -1,4 +1,4 @@
-#get a set of historical data from IB
+#blank starting template with the key EWrapper and EClient setup
 
 from ibapi.wrapper import EWrapper
 from ibapi.client import EClient
@@ -7,38 +7,38 @@ import queue    #queue is a requirement for ibapi python
 
 class IBEWrapper(EWrapper):
     
-    def init_getHistoricalData(self):
-        histDataQ = queue.Queue() #create a queue to receive info
-        self._histDataQ = histDataQ
+    def init_AccountSummary(self):
+        xQ = queue.Queue() #create a queue to receive info
+        self._xQ = xQ
 
-        return histDataQ
+        return xQ
 
 #    override the EWrapper method to put the information coming into a queue
-    def historiclData(self, reqId, bar)
-        #takes the incoming data and put it in a queue
-        #the EClient method call takes it out of the queue
-
-
+#    def accountSummary(self, reqId, account, tag, value, currency), for example:
+#        put the values in a tuple and add it to the queue
+#        summaryrow = (reqId, account, tag, value, currency)
+#        self._accountSummaryQ.put(summaryrow)   #note the underscore in _accountSummaryQ
+        
 class IBClient(EClient):
 
     def __init__(self,wrapper):
         EClient.__init__(self,wrapper)  #matches the init of EClient
     
 #    override the method to call the functions in EClient, for example:   
-    def getHistoricalData(self,contract,endDateTime,durationString,barSizeSetting,whatToShow,useRTH,formatDate,keepUptoDate,List)
-        histdata = self.wrapper.init_getHistoricalData()    #queue that has the incoming data
+#    def getAccountSummary(self, reqId, group, tags):
+#        acctsumq = self.wrapper.init_AccountSummary() #queue that gets the summary
 
-        self.reqHistoricalData(self,contract,endDateTime,durationString,barSizeSetting,whatToShow,useRTH,formatDate,keepUptoDate,List)
-        print("Getting the info")
-        MAX_WAIT_SECONDS = 10
-
-        try:
-            histDataItem = histdata.get(timeout=MAX_WAIT_SECONDS)
-        except queue.Empty:
-            print("Timed Out")
-            histDataItem = "No Data Items"
-
-        return histData
+#        self.reqAccountSummary(reqId,group,tags)
+#        print("Getting the info")        
+#        the values should get put into the queue by ibEWrapper.accountSummary
+#        MAX_WAIT_SECONDS = 10
+#        try:
+#            accountsummaryitem = acctsumq.get(timeout=MAX_WAIT_SECONDS)
+#        except queue.Empty:
+#            print("Exceeded maximum wait for wrapper to respond")
+#            accountsummaryitem = "nothing here"
+        
+#        return accountsummaryitem
 
     def Close(self):
         EClient.Close()
@@ -61,14 +61,8 @@ class IBApp(IBEWrapper, IBClient):
 runapp = IBApp("127.0.0.1", 7496, 99)   #connection settings
 runapp.startApi()   #documentation mentions a run function but the class definition only shows startApi()
 
-#establish which contract we want to get information for
-
-#get the information
-
-
-
-
-
+#   call the function we want, for example:
+#x = runapp.getAccountSummary(1,"All","NetLiquidation")
 #print(x)
 
 runapp.Close()

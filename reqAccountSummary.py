@@ -1,7 +1,7 @@
 #very basic attempt to get account information
 from ibapi.wrapper import EWrapper
 from ibapi.client import EClient
-#from threading import Thread
+from threading import Thread
 import queue    #queue is a requirement for ibapi python
 
 class IBEWrapper(EWrapper):
