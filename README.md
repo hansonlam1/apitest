@@ -1,7 +1,7 @@
 # apitest
 The purpose of this project is to start playing around with the native IB Python API.
 
-## main.py
+## getCurrentTime.py
 Many thanks to the GitHub gist at vpribish/IBAPIpythonexample1.py
 as well as  robcarver17/IBAPIpythonexample1.py
 
@@ -13,7 +13,6 @@ recreate it to maximize my familiarity with ibapi
 I will add additional stuff as I explore functions and features
 
 ## reqAccountSummary.py
-(** work in progress)
 Trying a very basic request for account information
 Keeping it to the bare basics for making a call to get information from IB
 
