@@ -1,7 +1,7 @@
 #very basic attempt to get account information
 from ibapi.wrapper import EWrapper
 from ibapi.client import EClient
-from threading import Thread
+#from threading import Thread
 import queue    #queue is a requirement for ibapi python
 
 class IBEWrapper(EWrapper):
@@ -27,7 +27,7 @@ class IBClient(EClient):
         acctsumq = self.wrapper.init_AccountSummary() #queue that gets the summary
 
         self.reqAccountSummary(reqId,group,tags)
-        
+        print("trying to get the number")        
         #the values should get put into the queue by ibEWrapper.accountSummary
         MAX_WAIT_SECONDS = 10
 
@@ -38,6 +38,9 @@ class IBClient(EClient):
             accountsummaryitem = "nothing here"
         
         return accountsummaryitem
+
+    def Close(self):
+        EClient.Close()
 
 #create a class for the main app, consisting of the EClient and the EWrapper
 class IBApp(IBEWrapper, IBClient):
@@ -52,11 +55,11 @@ class IBApp(IBEWrapper, IBClient):
         thread.start()
 
         setattr(self, "_thread", thread)
-
+    
 #if __name__ == '__main__':
 runapp = IBApp("127.0.0.1", 7496, 99)   #connection settings
 runapp.startApi()   #documentation mentions a run function but the class definition only shows startApi()
 x = runapp.getAccountSummary(1,"All","NetLiquidation")
 print(x)
-runapp.close()
+runapp.Close()
 runapp.disconnect()
