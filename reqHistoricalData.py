@@ -114,11 +114,6 @@ ibcontract.Symbol = "EUR"
 ibcontract.Exchange = "IDEALPRO"
 ibcontract.Currency = "USD"
 
-app = IBApp("127.0.0.1", 7496, 99)   #connection settings
-app.startApi()   #documentation mentions a run function but the class definition only shows startApi()
-
-#establish which contract we want to get information for
-
 #print(x)
 
 app.Close()
