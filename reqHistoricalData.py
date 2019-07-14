@@ -114,8 +114,6 @@ ibcontract.Symbol = "EUR"
 ibcontract.Exchange = "IDEALPRO"
 ibcontract.Currency = "USD"
 
-#establish which contract we want to get information for
-
 #print(x)
 
 app.Close()
