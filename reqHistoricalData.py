@@ -5,7 +5,6 @@ from threading import Thread
 from ibapi.contract import Contract as IBcontract
 import queue    #queue is a requirement for ibapi python
 
-
 class IBEWrapper(EWrapper):
     
     def init_getHistoricalData(self):
@@ -56,6 +55,32 @@ class IBClient(EClient):
         except queue.Empty:
             print("Timed Out")
             histDataItem = "No Data Items"
+        return histDataQ
+
+#    override the EWrapper method to put the information coming into a queue
+    def historiclData(self, reqId, bar)
+        #takes the incoming data and put it in a queue
+        #the EClient method call takes it out of the queue
+
+
+class IBClient(EClient):
+
+    def __init__(self,wrapper):
+        EClient.__init__(self,wrapper)  #matches the init of EClient
+    
+#    override the method to call the functions in EClient, for example:   
+    def getHistoricalData(self,contract,endDateTime,durationString,barSizeSetting,whatToShow,useRTH,formatDate,keepUptoDate,List)
+        histdata = self.wrapper.init_getHistoricalData()    #queue that has the incoming data
+
+        self.reqHistoricalData(self,contract,endDateTime,durationString,barSizeSetting,whatToShow,useRTH,formatDate,keepUptoDate,List)
+        print("Getting the info")
+        MAX_WAIT_SECONDS = 10
+
+        try:
+            histDataItem = histdata.get(timeout=MAX_WAIT_SECONDS)
+        except queue.Empty:
+            print("Timed Out")
+            histDataItem = "No Data Items"
 
         return histData
 
@@ -89,9 +114,12 @@ ibcontract.Symbol = "EUR"
 ibcontract.Exchange = "IDEALPRO"
 ibcontract.Currency = "USD"
 
-#get the information for the contract
+app = IBApp("127.0.0.1", 7496, 99)   #connection settings
+app.startApi()   #documentation mentions a run function but the class definition only shows startApi()
+
+#establish which contract we want to get information for
 
 #print(x)
 
-runapp.Close()
-runapp.disconnect()
+app.Close()
+app.disconnect()
