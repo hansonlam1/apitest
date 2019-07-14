@@ -1,9 +1,10 @@
 #get a set of historical data from IB
-
 from ibapi.wrapper import EWrapper
 from ibapi.client import EClient
 from threading import Thread
+from ibapi.contract import Contract as IBcontract
 import queue    #queue is a requirement for ibapi python
+
 
 class IBEWrapper(EWrapper):
     
@@ -23,12 +24,30 @@ class IBClient(EClient):
 
     def __init__(self,wrapper):
         EClient.__init__(self,wrapper)  #matches the init of EClient
-    
+
 #    override the method to call the functions in EClient, for example:   
-    def getHistoricalData(self,contract,endDateTime,durationString,barSizeSetting,whatToShow,useRTH,formatDate,keepUptoDate,List)
+    def getHistoricalData(self,
+                            contract,
+                            endDateTime,
+                            durationString,
+                            barSizeSetting,
+                            whatToShow,
+                            useRTH,
+                            formatDate,
+                            keepUptoDate,
+                            List)
         histdata = self.wrapper.init_getHistoricalData()    #queue that has the incoming data
 
-        self.reqHistoricalData(self,contract,endDateTime,durationString,barSizeSetting,whatToShow,useRTH,formatDate,keepUptoDate,List)
+        self.reqHistoricalData(self,
+                                contract,
+                                endDateTime,
+                                durationString,
+                                barSizeSetting,
+                                whatToShow,
+                                useRTH,
+                                formatDate,
+                                keepUptoDate,
+                                List)
         print("Getting the info")
         MAX_WAIT_SECONDS = 10
 
@@ -58,16 +77,19 @@ class IBApp(IBEWrapper, IBClient):
         setattr(self, "_thread", thread)
     
 #if __name__ == '__main__':
-runapp = IBApp("127.0.0.1", 7496, 99)   #connection settings
-runapp.startApi()   #documentation mentions a run function but the class definition only shows startApi()
+app = IBApp("127.0.0.1", 7496, 99)   #connection settings
+app.startApi()   #documentation mentions a run function but the class definition only shows startApi()
 
 #establish which contract we want to get information for
+#consider having prebuilt contracts in a py file to import
+#online examples have a resolve IB contract step but I'll try without for now
+ibcontract = IBcontract()
+ibcontract.SecType = "CASH"
+ibcontract.Symbol = "EUR"
+ibcontract.Exchange = "IDEALPRO"
+ibcontract.Currency = "USD"
 
-#get the information
-
-
-
-
+#get the information for the contract
 
 #print(x)
 
