@@ -4,6 +4,7 @@ from ibapi.client import EClient
 from threading import Thread
 from ibapi.contract import Contract as IBcontract
 import queue    #queue is a requirement for ibapi python
+import datetime
 
 class IBEWrapper(EWrapper):
     
@@ -13,8 +14,8 @@ class IBEWrapper(EWrapper):
 
         return histDataQ
 
-#    override the EWrapper method to put the information coming into a queue
-    def historiclData(self, reqId, bar)
+    #override the EWrapper method to put the information coming into a queue
+    def historicalData(self, reqId, bar):
         #takes the incoming data and put it in a queue
         #the EClient method call takes it out of the queue
 
@@ -24,7 +25,7 @@ class IBClient(EClient):
     def __init__(self,wrapper):
         EClient.__init__(self,wrapper)  #matches the init of EClient
 
-#    override the method to call the functions in EClient, for example:   
+    #override the method to call the functions in EClient, for example:   
     def getHistoricalData(self,
                             contract,
                             endDateTime,
@@ -34,7 +35,7 @@ class IBClient(EClient):
                             useRTH,
                             formatDate,
                             keepUptoDate,
-                            List)
+                            List):
         histdata = self.wrapper.init_getHistoricalData()    #queue that has the incoming data
 
         self.reqHistoricalData(self,
@@ -57,8 +58,8 @@ class IBClient(EClient):
             histDataItem = "No Data Items"
         return histDataQ
 
-#    override the EWrapper method to put the information coming into a queue
-    def historiclData(self, reqId, bar)
+    #override the EWrapper method to put the information coming into a queue
+    def historiclData(self, reqId, bar):
         #takes the incoming data and put it in a queue
         #the EClient method call takes it out of the queue
 
@@ -68,11 +69,29 @@ class IBClient(EClient):
     def __init__(self,wrapper):
         EClient.__init__(self,wrapper)  #matches the init of EClient
     
-#    override the method to call the functions in EClient, for example:   
-    def getHistoricalData(self,contract,endDateTime,durationString,barSizeSetting,whatToShow,useRTH,formatDate,keepUptoDate,List)
+    #override the method to call the functions in EClient, for example:   
+    def getHistoricalData(self,
+                            contract,
+                            endDateTime,
+                            durationString,
+                            barSizeSetting,
+                            whatToShow,
+                            useRTH,
+                            formatDate,
+                            keepUptoDate,
+                            List):
         histdata = self.wrapper.init_getHistoricalData()    #queue that has the incoming data
 
-        self.reqHistoricalData(self,contract,endDateTime,durationString,barSizeSetting,whatToShow,useRTH,formatDate,keepUptoDate,List)
+        self.reqHistoricalData(self,
+                                contract,
+                                endDateTime,
+                                durationString,
+                                barSizeSetting,
+                                whatToShow,
+                                useRTH,
+                                formatDate,
+                                keepUptoDate,
+                                List)
         print("Getting the info")
         MAX_WAIT_SECONDS = 10
 
@@ -81,7 +100,7 @@ class IBClient(EClient):
         except queue.Empty:
             print("Timed Out")
             histDataItem = "No Data Items"
-
+            
         return histData
 
     def Close(self):
@@ -114,7 +133,20 @@ ibcontract.Symbol = "EUR"
 ibcontract.Exchange = "IDEALPRO"
 ibcontract.Currency = "USD"
 
-#print(x)
 
+x = app.getHistoricalData(999,
+                            ibcontract,
+                            datetime.datetime.today().strftime ("%Y%m%d %H:%M:%S %Z"),
+                            "1 Y",
+                            "1 day",
+                            999,
+                            "MIDPOINT",
+                            0,
+                            1,
+                            FALSE,
+                            []
+                            )   
+
+print(x)
 app.Close()
 app.disconnect()
