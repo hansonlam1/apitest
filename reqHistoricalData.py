@@ -38,6 +38,7 @@ class IBClient(EClient):
                             List):
         histdata = self.wrapper.init_getHistoricalData()    #queue that has the incoming data
 
+        #call the method which then results in the EWrapper putting stuff in the queue
         self.reqHistoricalData(self,
                                 contract,
                                 endDateTime,
