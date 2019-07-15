@@ -24,50 +24,6 @@ class IBClient(EClient):
 
     def __init__(self,wrapper):
         EClient.__init__(self,wrapper)  #matches the init of EClient
-
-    #override the method to call the functions in EClient, for example:   
-    def getHistoricalData(self,
-                            contract,
-                            endDateTime,
-                            durationString,
-                            barSizeSetting,
-                            whatToShow,
-                            useRTH,
-                            formatDate,
-                            keepUptoDate,
-                            List):
-        histdata = self.wrapper.init_getHistoricalData()    #queue that has the incoming data
-
-        self.reqHistoricalData(self,
-                                contract,
-                                endDateTime,
-                                durationString,
-                                barSizeSetting,
-                                whatToShow,
-                                useRTH,
-                                formatDate,
-                                keepUptoDate,
-                                List)
-        print("Getting the info")
-        MAX_WAIT_SECONDS = 10
-
-        try:
-            histDataItem = histdata.get(timeout=MAX_WAIT_SECONDS)
-        except queue.Empty:
-            print("Timed Out")
-            histDataItem = "No Data Items"
-        return histDataQ
-
-    #override the EWrapper method to put the information coming into a queue
-    def historiclData(self, reqId, bar):
-        #takes the incoming data and put it in a queue
-        #the EClient method call takes it out of the queue
-
-
-class IBClient(EClient):
-
-    def __init__(self,wrapper):
-        EClient.__init__(self,wrapper)  #matches the init of EClient
     
     #override the method to call the functions in EClient, for example:   
     def getHistoricalData(self,
