@@ -17,7 +17,9 @@ class IBEWrapper(EWrapper):
     #override the EWrapper method to put the information coming into a queue
     def historicalData(self, reqId, bar):
         #takes the incoming data and put it in a queue
+        dataBar = bar
         #the EClient method call takes it out of the queue
+        self._histDataQ.put(dataBar)
 
 
 class IBClient(EClient):
@@ -27,6 +29,7 @@ class IBClient(EClient):
     
     #override the method to call the functions in EClient, for example:   
     def getHistoricalData(self,
+                            tickerId,
                             contract,
                             endDateTime,
                             durationString,
@@ -40,6 +43,7 @@ class IBClient(EClient):
 
         #call the method which then results in the EWrapper putting stuff in the queue
         self.reqHistoricalData(self,
+                                tickerId
                                 contract,
                                 endDateTime,
                                 durationString,
@@ -90,17 +94,15 @@ ibcontract.Symbol = "EUR"
 ibcontract.Exchange = "IDEALPRO"
 ibcontract.Currency = "USD"
 
-
 x = app.getHistoricalData(999,
                             ibcontract,
                             datetime.datetime.today().strftime ("%Y%m%d %H:%M:%S %Z"),
                             "1 Y",
                             "1 day",
-                            999,
                             "MIDPOINT",
                             0,
                             1,
-                            FALSE,
+                            False,
                             []
                             )   
 
